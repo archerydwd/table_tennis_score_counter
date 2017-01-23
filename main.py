@@ -5,7 +5,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 team_1_pin = 25
-team_2_pin = 22
+team_2_pin = 24
+GPIO.setup(team_1_pin, GPIO.IN)
 GPIO.setup(team_2_pin, GPIO.IN)
 
 
