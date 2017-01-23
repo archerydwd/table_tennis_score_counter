@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time
+import time, os
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
