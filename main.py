@@ -99,10 +99,10 @@ game = Game()
 
 while True:
     if not GPIO.input(team_1_pin):
-        print "team 1 pressed"
+        game.increment_team_1()
         time.sleep(1)
     elif not GPIO.input(team_2_pin):
-        print "team 2 pressed"
+        game.increment_team_2()
         time.sleep(1)
     else:
         os.system('clear')
