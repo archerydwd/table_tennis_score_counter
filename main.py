@@ -4,8 +4,10 @@ import time, os
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-button_pin = 25
-GPIO.setup(button_pin, GPIO.IN)
+team_1_pin = 25
+team_2_pin = 22
+GPIO.setup(team_1_pin, GPIO.IN)
+GPIO.setup(team_2_pin, GPIO.IN)
 
 
 class Team:
@@ -96,8 +98,11 @@ game = Game()
 #       reset()
 
 while True:
-    if not GPIO.input(button_pin):
-        print "button pressed"
+    if not GPIO.input(team_1_pin):
+        print "team 1 pressed"
+        time.sleep(1)
+    elif not GPIO.input(team_2_pin):
+        print "team 2 pressed"
         time.sleep(1)
     else:
         os.system('clear')
