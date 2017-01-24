@@ -10,8 +10,6 @@ team_2_pin = 24
 GPIO.setup(team_1_pin, GPIO.IN)
 GPIO.setup(team_2_pin, GPIO.IN)
 
-volume = engine.getProperty('volume')
-engine.setProperty('volume', volume+0.25)
 engine.setProperty('gender', 'female')
 engine.runAndWait()
 
@@ -66,7 +64,6 @@ class Game:
             else:
                 engine.say("The score is " + str(self.team_2.get_score()) + ", " + str(self.team_1.get_score()) + " to team 2")
 
-
     def increment_team_2(self):
         score1 = self.team_2.get_score()
         score2 = self.team_1.get_score()
@@ -106,6 +103,7 @@ game = Game()
 while True:
     if not GPIO.input(team_1_pin):
         game.increment_team_1()
+        engine.runAndWait()
     elif not GPIO.input(team_2_pin):
         game.increment_team_2()
-    engine.runAndWait()
+        engine.runAndWait()
