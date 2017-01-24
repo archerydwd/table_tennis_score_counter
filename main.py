@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
-import time, os
+import pyttsx
 
+engine = pyttsx.init()
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
@@ -39,46 +40,53 @@ class Game:
         score2 = self.team_2.get_score()
         if score1 == 9 and score2 == 10:
             self.deuce()
-            print "deuce"
+            engine.say('Deuce')
         elif score1 == 10 and score2 == 11:
             self.deuce()
-            print "deuce"
+            engine.say('Deuce')
         elif score1 == 10 and score2 == 10:
             self.team_1.increment_score()
-            print "advantage to team 1"
+            engine.say('Advantage to team 1')
         elif score1 == 10 and score2 < 10:
             self.reset()
-            print "team 1 win"
+            engine.say('Team 1 wins')
         elif score1 == 11:
             self.team_1.increment_score()
             self.reset()
-            print "team 1 win"
+            engine.say('Team 1 wins')
         elif score1 < 10:
             self.team_1.increment_score()
-            print "team 1: " + str(self.team_1.get_score()) + " team 2: " + str(self.team_2.get_score())
+            if self.team_1.get_score() > self.team_2.get_score():
+                engine.say("The score is " + str(self.team_1.get_score()) + ", " + str(self.team_2.get_score()) + " to team 1")
+            else:
+                engine.say("The score is " + str(self.team_2.get_score()) + ", " + str(self.team_1.get_score()) + " to team 2")
+
 
     def increment_team_2(self):
         score1 = self.team_2.get_score()
         score2 = self.team_1.get_score()
         if score1 == 9 and score2 == 10:
             self.deuce()
-            print "deuce"
+            engine.say('Deuce')
         elif score1 == 10 and score2 == 11:
             self.deuce()
-            print "deuce"
+            engine.say('Deuce')
         elif score1 == 10 and score2 == 10:
             self.team_2.increment_score()
-            print "advantage to team 2"
+            engine.say('Advantage to team 2')
         elif score1 == 10 and score2 < 10:
             self.reset()
-            print "team 2 win"
+            engine.say('Team 2 wins')
         elif score1 == 11:
             self.team_2.increment_score()
             self.reset()
-            print "team 2 win"
+            engine.say('Team 2 wins')
         elif score1 < 10:
             self.team_2.increment_score()
-            print "team 2: " + str(self.team_2.get_score()) + " team 1: " + str(self.team_1.get_score())
+            if self.team_1.get_score() > self.team_2.get_score():
+                engine.say("The score is " + str(self.team_1.get_score()) + ", " + str(self.team_2.get_score()) + " to team 1")
+            else:
+                engine.say("The score is " + str(self.team_2.get_score()) + ", " + str(self.team_1.get_score()) + " to team 2")
 
     def deuce(self):
         self.team_1.set_score(10)
@@ -90,22 +98,32 @@ class Game:
 
 game = Game()
 
-# if team 1 button pressed
-#       increment_team_1
-# else team 2 button pressed
-#       increment_team_2
-# else reset button pressed
-#       reset()
-
 while True:
     if not GPIO.input(team_1_pin):
         game.increment_team_1()
-        time.sleep(1)
     elif not GPIO.input(team_2_pin):
         game.increment_team_2()
-        time.sleep(1)
-    else:
-        os.system('clear')
-        print "waiting for you to press the button"
+    engine.runAndWait()
 
+# configs of speech voice
 
+voices = engine.getProperty('voices')
+for voice in voices:
+    engine.setProperty('voice', voice.id)
+    engine.say('The quick brown fox jumped over the lazy dog.')
+engine.runAndWait()
+
+rate = engine.getProperty('rate')
+engine.setProperty('rate', rate+50)
+engine.say('The quick brown fox jumped over the lazy dog.')
+engine.runAndWait()
+
+volume = engine.getProperty('volume')
+engine.setProperty('volume', volume-0.25)
+engine.say('The quick brown fox jumped over the lazy dog.')
+engine.runAndWait()
+
+for i in range(100):
+    engine.setProperty('age', i)
+    engine.say('The quick brown fox jumped over the lazy dog.')
+engine.runAndWait()
