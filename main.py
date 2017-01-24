@@ -10,16 +10,9 @@ team_2_pin = 24
 GPIO.setup(team_1_pin, GPIO.IN)
 GPIO.setup(team_2_pin, GPIO.IN)
 
-rate = engine.getProperty('rate')
-engine.setProperty('rate', rate-30)
 volume = engine.getProperty('volume')
 engine.setProperty('volume', volume+0.25)
 engine.setProperty('gender', 'female')
-
-voices = engine.getProperty('voices')
-for voice in voices:
-    engine.setProperty('voice', voice.id)
-    engine.say('The quick brown fox jumped over the lazy dog.')
 engine.runAndWait()
 
 
