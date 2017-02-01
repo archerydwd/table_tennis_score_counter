@@ -4,10 +4,12 @@ import pyttsx, time
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
+reset_pin = 18
 team_1_pin = 25
 team_2_pin = 24
 GPIO.setup(team_1_pin, GPIO.IN)
 GPIO.setup(team_2_pin, GPIO.IN)
+GPIO.setup(reset_pin, GPIO.IN)
 
 engine = pyttsx.init()
 engine.runAndWait()
@@ -55,18 +57,20 @@ class Game:
             self.engine.say('Advantage team 1')
 	    print "Advantage team 1"
         elif score1 == 10 and score2 < 10:
-            self.reset()
-            self.engine.say('Team 1 wins')
+            self.engine.say('Team 1 wins. Ready')
 	    print "Team 1 wins"
+            self.reset()
         elif score1 == 11:
             self.team_1.increment_score()
-            self.reset()
-            self.engine.say('Team 1 wins')
+            self.engine.say('Team 1 wins. Ready')
 	    print "Team 1 wins"
+            self.reset()
         elif score1 < 10:
             self.team_1.increment_score()
 	    self.engine.say(str(self.team_1.get_score()) + ", " + str(self.team_2.get_score()))
 	    print str(self.team_1.get_score()) + ", " + str(self.team_2.get_score())
+	else:
+	    print "Error"
 
     def increment_team_2(self):
         score1 = self.team_2.get_score()
@@ -84,18 +88,20 @@ class Game:
             self.engine.say('Advantage team 2')
 	    print "Advantage team 2"
         elif score1 == 10 and score2 < 10:
-            self.reset()
-            self.engine.say('Team 2 wins')
+            self.engine.say('Team 2 wins. Ready')
 	    print "Team 2 wins"
+            self.reset()
         elif score1 == 11:
             self.team_2.increment_score()
-            self.reset()
-            self.engine.say('Team 2 wins')
+            self.engine.say('Team 2 wins. Ready')
 	    print "Team 2 wins"
+            self.reset()
         elif score1 < 10:
             self.team_2.increment_score()
 	    self.engine.say(str(self.team_1.get_score()) + ", " + str(self.team_2.get_score()))
 	    print str(self.team_1.get_score()) + ", " + str(self.team_2.get_score())
+	else: 
+	    print "Error"
 
     def deuce(self):
         self.team_1.set_score(10)
@@ -114,6 +120,10 @@ while True:
         time.sleep(0.3)
     elif not GPIO.input(team_2_pin):
         game.increment_team_2()
+    	time.sleep(0.3)
+    elif not GPIO.input(reset_pin):
+        game.reset()
+	game.engine.say("Ready")
     	time.sleep(0.3)
     game.engine.runAndWait()
 
