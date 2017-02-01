@@ -110,7 +110,9 @@ game = Game()
 while True:
     if not GPIO.input(team_1_pin):
         game.increment_team_1()
+        engine.runAndWait()
     elif not GPIO.input(team_2_pin):
         game.increment_team_2()
     time.sleep(0.5)
     game.engine.runAndWait()
+
