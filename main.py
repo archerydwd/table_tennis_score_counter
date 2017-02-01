@@ -107,12 +107,13 @@ class Game:
 
 game = Game()
 
+game.engine.say("Ready")
 while True:
     if not GPIO.input(team_1_pin):
         game.increment_team_1()
-        engine.runAndWait()
+        time.sleep(0.3)
     elif not GPIO.input(team_2_pin):
         game.increment_team_2()
-    time.sleep(0.5)
+    	time.sleep(0.3)
     game.engine.runAndWait()
 
